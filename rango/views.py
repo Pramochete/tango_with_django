@@ -16,4 +16,4 @@ def views(request):
     return HttpResponse("Hello views")
 
 def about(request):
-    return  HttpResponse("Rango says here is the about page")
+    return render(request, 'rango/about.html',{})

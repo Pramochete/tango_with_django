@@ -18,6 +18,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Dynamic paths for templates
 TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 
+# Dynamic paths for static files
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -72,6 +75,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'tango_with_django.wsgi.application'
 
+# List of paths with which Django can expect to find static files
+STATICFILES_DIRS=[STATIC_DIR,]
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases

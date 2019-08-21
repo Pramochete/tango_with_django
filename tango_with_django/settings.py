@@ -21,6 +21,9 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, 'templates')
 # Dynamic paths for static files
 STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
+#Dynamic paths for media files
+MEDIA_DIR = os.path.join(BASE_DIR, 'media')
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -121,6 +124,12 @@ USE_L10N = True
 
 USE_TZ = True
 
+# Dynamic media file hosting
+# This varibale tells django where to look for media files
+MEDIA_ROOT = MEDIA_DIR
+
+# This varibale tells from where to serve those media files
+MEDIA_URL = '/media/'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/

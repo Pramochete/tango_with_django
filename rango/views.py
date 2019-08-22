@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Category, Page
-from .forms import CategoryForm
+from .forms import CategoryForm, PageForm
 
 # Create your views here.
 def index(request):
@@ -78,3 +78,24 @@ def add_category(request):
     # Will handle the bad form, new form, or no form supplied cases.
     # Render the form with error mesages (if any).
     return render(request, 'rango/add_category.html',{'form':form})
+
+def add_page(request, category_name_url):
+    try:
+        category = Category.objects.get(slug=category_name_url)
+    except Category.DoesNotExist:
+        category = None
+
+    form = PageForm()
+    if request.method == 'POST':
+        form = PageForm(request.POST)
+        if form.is_valid():
+            if category:
+                page = form.save(commit=False)
+                page.category = category
+                page.views = 0
+                page.save()
+                return show_category(request, category_name_url)
+        else:
+            print (form.errors)
+    context_dict = {'form':form, 'category':category}
+    return render(request, 'rango/add_page.html', context_dict)

@@ -4,9 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rango</title>
+    <title>
+        {% block title_block %}
+            Add Category
+        {% endblock %}
+    </title>
 </head>
 <body>
+    {% block body_block %}
     <h1>Add a Cateory</h1>
     <div>
         <form action="." id="category_form" method="POST">
@@ -24,5 +29,6 @@
             <input type="submit" name="submit", value="Create Category">
         </form>
     </div>
+    {% endblock %}
 </body>
 </html>

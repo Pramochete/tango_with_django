@@ -1,33 +1,41 @@
+{% extends 'rango/base.html' %}
 <!DOCTYPE html>
+{% load staticfiles %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Rango</title>
+    <title>
+        {% block title_block %}
+            Add page
+        {% endblock %}
+    </title>
 </head>
 <body>
-    <div>
-        {% if category %}
-        <h1>Add a page to {{ category.name }}</h1>
-        <form action="." method="POST">
-            {% csrf_token %}
-            {% for hidden in form.hidden_fields %}
-                {{ hidden }}
-            {% endfor %}
-            
-            {% for field in form.visible_fields %}
-                {{ field.errors }}
-                {{ field.help_text }}
-                {{ field }}
-                <br>
-            {% endfor %}
-            <input type="submit" name="submit", value="Create Page">
-
-        </form>
-        {% else %}
-            The specified category doen not exist
-        {% endif %}
-    </div>
+    {% block body_block %}
+        <div>
+            {% if category %}
+            <h1>Add a page to {{ category.name }}</h1>
+            <form action="." method="POST">
+                {% csrf_token %}
+                {% for hidden in form.hidden_fields %}
+                    {{ hidden }}
+                {% endfor %}
+                
+                {% for field in form.visible_fields %}
+                    {{ field.errors }}
+                    {{ field.help_text }}
+                    {{ field }}
+                    <br>
+                {% endfor %}
+                <input type="submit" name="submit", value="Create Page">
+    
+            </form>
+            {% else %}
+                The specified category doen not exist
+            {% endif %}
+        </div>
+    {% endblock %}
 </body>
 </html>

@@ -39,7 +39,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     # The additional attributes we wish to include.
-    webiste = models.URLField(blank=True)
+    website = models.URLField(blank=True)
 
     # ImageFiled() requires Pillow to be installed.
     picture = models.ImageField(upload_to='profile_images', blank=True)

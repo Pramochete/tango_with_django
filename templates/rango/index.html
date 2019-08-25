@@ -13,11 +13,15 @@
     </title>
 </head>
 <body>
-    <h1>Rango says....</h1>
-    <div>
-        hey there partner! <br>
-    </div>
     {% block body_block %}
+    <h1>Rango says....</h1>
+        <div>
+            {% if user.is_authenticated %}
+                howdy {{ user.username }}
+            {% else %}
+                hey there partner! <br>
+            {% endif %}
+        </div>
         <div>
             {% if categories %}
             <h2>Most Liked Categories</h2>

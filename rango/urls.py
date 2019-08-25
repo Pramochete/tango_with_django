@@ -15,4 +15,7 @@ urlpatterns = [
     path('login/', 
          views.user_login,
          name = 'login'),
+    path('restricted/', 
+         views.restricted,
+         name='restricted'),
 ]

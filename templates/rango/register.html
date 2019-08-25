@@ -12,6 +12,12 @@
         <a href="{% url 'rango:index' %}">Return to homepage</a><br>
     {% else %}
         Rango says: <strong>register here!</strong><br>
+        <!-- enctype = "multipart/form-data" -->
+        <!-- This is because if the user tries to upload a picture, the response from the form maycontain binary data - and may be quite large. 
+            The response therefore will have tobe broken into multiple parts to be transmitted back to the server. 
+            As such, weneed to denote this with enctype="multipart/form-data". 
+            This tells the HTTPclient (the web browser) to package and send the data accordingly. 
+            Otherwise,the server won’t receive all the data submitted by the user-->
         <form id="user_form" method="POST" action="{% url 'rango:register' %}" enctype="multipart/form-data">
         
             <!-- Required in each form -->>

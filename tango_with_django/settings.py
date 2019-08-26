@@ -131,6 +131,8 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGIN_URL= 'rango/login/'
+
 # Dynamic media file hosting
 # This varibale tells django where to look for media files
 MEDIA_ROOT = MEDIA_DIR

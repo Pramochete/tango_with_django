@@ -9,6 +9,7 @@ from datetime import datetime
 
 # Create your views here.
 def index(request):
+    request.session.set_test_cookie()
     # Query the database for a list of All categories currently stored
     # Order the categories by no. of likes in descending order
     # Retrieve the top 5 only - or all if less than 5
@@ -21,11 +22,12 @@ def index(request):
     pages_list = Page.objects.order_by('-views')[:5]
     context_dict = {'categories':category_list,
                     'pages':pages_list}
-    # Obtain our Response object early so we can add cookie information
-    response = render(request, 'rango/index.html', context_dict)
-
+    
     # Call function to handle the cookies
-    visitor_cookie_handler(request, response)
+    visitor_cookie_handler(request,)
+    context_dict['visits'] = request.session['visits']
+
+    response = render(request, 'rango/index.html', context_dict)
 
     # Render the response back to the user, updating any cookies that need changed
     return response
@@ -34,6 +36,9 @@ def views(request):
     return HttpResponse("Hello views")
 
 def about(request):
+    if request.session.test_cookie_worked():	
+        print('TEST COOKIE WORKED')	
+        request.session.delete_test_cookie()
     return render(request, 'rango/about.html',{})
 
 def show_category(request, category_name_url):
@@ -221,26 +226,35 @@ def user_logout(request):
     # Take the user back to the homepage.
     return HttpResponseRedirect(reverse('rango:index'))
 
-def visitor_cookie_handler(request, response):
-    # Get the number of visits to the site
-    # We use the COOKIES.get() function to obtain the visits cookie.
-    # If the cookie exists, the value returned is casted to an integer.
-    # If the cookie doesn't exist, then the default value of 1 is used.
-    visits = int(request.COOKIES.get('visits', '1'))
+# A helper method
+def get_server_side_cookie(request, cookie, default_val=None):
+    """
+    storing session data server-side
+    only works however for built-in types, such as int, float, long, complex and boolean
+    """
+    val = request.session.get(cookie)
+    if not val:
+        val = default_val
+    return val
 
-    last_visit_cookie = request.COOKIES.get('last_visit', str(datetime.now()))
-    last_visit_time = datetime.strptime(last_visit_cookie[:-7], 
+# Updated the function definition
+def visitor_cookie_handler(request):
+    visits = int(get_server_side_cookie(request, 'visits', 1))
+    last_visit_cookie = get_server_side_cookie(request,
+                                                'last_visit',
+                                                str(datetime.now()))
+    last_visit_time = datetime.strptime(last_visit_cookie[:-7],
                                         '%Y-%m-%d %H:%M:%S')
-    # If it's been more than a day since the last visit...
-    if (datetime.now()-last_visit_time).days > 0:
-        visits = visits+1
-        # update the last visit cookie now that we have updated the count
-        response.set_cookie('last_visit', str(datetime.now()))
+
+    # If it's been more than a day since the last visit.....
+    if (datetime.now()-last_visit_time).days >0:
+        visits = visits + 1
+        # Update the last visit cookie now that we have updated the couunt
+        request.session['last_visit'] = str(datetime.now())
     else:
         visits = 1
-        # set the last visit cookie
-        response.set_cookie('last_visit', last_visit_cookie)
+        # Set the last visit cookie now that we have updated the count
+        request.session['last_visit'] = last_visit_cookie
     
     # Update/set the visits cookie
-    response.set_cookie('visits', visits)
-
+    request.session['visits'] = visits

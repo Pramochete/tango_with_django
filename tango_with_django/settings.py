@@ -117,6 +117,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Enable Browser-length sessions
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+# SESSION_COOKIE_AGE = 1209600 will mean your webiste's cookies expire after a two week period
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
